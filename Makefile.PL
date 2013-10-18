@@ -1,66 +1,81 @@
-# A template for Makefile.PL.
-# - Set the $PACKAGE variable to the name of your module.
-# - Set $LAST_API_CHANGE to reflect the last version you changed the API 
-#   of your module.
-# - Fill in your dependencies in PREREQ_PM
-# Alternatively, you can say the hell with this and use h2xs.
 
-use ExtUtils::MakeMaker;
+use strict;
+use warnings;
 
-$PACKAGE = 'Archive::Any';
-($PACKAGE_FILE = $PACKAGE) =~ s|::|/|g;
-$LAST_API_CHANGE = 0;
 
-eval "require $PACKAGE";
 
-unless ($@) { # Make sure we did find the module.
-    print <<"CHANGE_WARN" if ${$PACKAGE.'::VERSION'} < $LAST_API_CHANGE;
+use ExtUtils::MakeMaker 6.30;
 
-NOTE: There have been API changes between this version and any older
-than version $LAST_API_CHANGE!  Please read the Changes file if you
-are upgrading from a version older than $LAST_API_CHANGE.
 
-CHANGE_WARN
-}
 
-WriteMakefile(
-    NAME            => $PACKAGE,
-    VERSION_FROM    => "lib/$PACKAGE_FILE.pm", # finds $VERSION
-    PREREQ_PM       => {
-	Archive::Tar   => 0.22,
-	Archive::Zip   => 1.07,
-	Cwd            => 0,
-	Module::Find   => 0.05,
-	MIME::Types    => 1.16,
-	File::MMagic   => 1.27,
-	File::Spec::Functions => 0,
-	Test::More     => 0.40,
-	Test::Warn     => 0,
-    },
-    'dist'          => {
-	COMPRESS   => 'gzip -9',
-	SUFFIX     => '.gz',
-	DIST_DEFAULT   => 'all tardist',
-    },
+my %WriteMakefileArgs = (
+  "ABSTRACT" => "Single interface to deal with file archives.",
+  "AUTHOR" => "Clint Moore, Michael G Schwern (author emeritus), Olaf Alders (current maintainer)",
+  "BUILD_REQUIRES" => {
+    "Module::Build" => "0.3601"
+  },
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30",
+    "Module::Build" => "0.3601"
+  },
+  "DISTNAME" => "Archive-Any",
+  "EXE_FILES" => [],
+  "LICENSE" => "perl",
+  "NAME" => "Archive::Any",
+  "PREREQ_PM" => {
+    "Archive::Tar" => 0,
+    "Archive::Zip" => 0,
+    "Cwd" => 0,
+    "File::MMagic" => 0,
+    "File::Spec::Functions" => 0,
+    "MIME::Types" => 0,
+    "Module::Find" => 0,
+    "base" => 0,
+    "strict" => 0,
+    "vars" => 0,
+    "warnings" => 0
+  },
+  "TEST_REQUIRES" => {
+    "Test::More" => 0,
+    "Test::Warn" => 0
+  },
+  "VERSION" => "0.0940",
+  "test" => {
+    "TESTS" => "t/*.t"
+  }
 );
 
 
-{
-    package MY;
-
-    sub test_via_harness {
-        my($self, $orig_perl, $tests) = @_;
-
-        my @perls = ($orig_perl);
-        push @perls, qw(bleadperl perl5.005_03 perl5.004_05 perl5.004_04
-                        perl5.004)
-          if $ENV{PERL_TEST_ALL};
-
-        my $out;
-        foreach my $perl (@perls) {
-            $out .= $self->SUPER::test_via_harness($perl, $tests);
-        }
-
-        return $out;
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  my $tr = delete $WriteMakefileArgs{TEST_REQUIRES};
+  my $br = $WriteMakefileArgs{BUILD_REQUIRES};
+  for my $mod ( keys %$tr ) {
+    if ( exists $br->{$mod} ) {
+      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
     }
+    else {
+      $br->{$mod} = $tr->{$mod};
+    }
+  }
 }
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
+}
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
+

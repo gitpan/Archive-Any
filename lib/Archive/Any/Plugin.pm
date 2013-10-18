@@ -1,4 +1,7 @@
 package Archive::Any::Plugin;
+{
+  $Archive::Any::Plugin::VERSION = '0.0940';
+}
 
 use strict;
 use warnings;
@@ -6,13 +9,47 @@ use warnings;
 use Module::Find;
 use Cwd;
 
+
+
+sub _extract {
+    my($self, $file, $dir) = @_;
+
+    my $orig_dir;
+    if( defined $dir ) {
+        $orig_dir = getcwd;
+        chdir $dir;
+    }
+
+    my $success = $self->extract( $file );
+
+    if( defined $dir) {
+        chdir $orig_dir;
+    }
+
+    return 1;
+}
+
+1;
+
+__END__
+
+=pod
+
 =head1 NAME
 
-Archive::Any::Plugin - Anatomy of an Archive::Any plugin.
+Archive::Any::Plugin
+
+=head1 VERSION
+
+version 0.0940
 
 =head1 SYNOPSIS
 
 Explains what is required for a working plugin to Archive::Any.
+
+=head1 NAME
+
+Archive::Any::Plugin - Anatomy of an Archive::Any plugin.
 
 =head1 PLUGINS
 
@@ -67,25 +104,29 @@ Clint Moore E<lt>cmoore@cpan.orgE<gt>
 
 Archive::Any
 
+=head1 AUTHORS
+
+=over 4
+
+=item *
+
+Clint Moore
+
+=item *
+
+Michael G Schwern (author emeritus)
+
+=item *
+
+Olaf Alders (current maintainer)
+
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Olaf Alders.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
 =cut
-
-
-sub _extract {
-    my($self, $file, $dir) = @_;
-
-    my $orig_dir;
-    if( defined $dir ) {
-        $orig_dir = getcwd;
-        chdir $dir;
-    }
-
-    my $success = $self->extract( $file );
-
-    if( defined $dir) {
-        chdir $orig_dir;
-    }
-
-    return 1;
-}
-
-1;

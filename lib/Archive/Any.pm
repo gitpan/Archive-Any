@@ -1,133 +1,3 @@
-
-=head1 NAME
-
-Archive::Any - Single interface to deal with file archives.
-
-=head1 SYNOPSIS
-
-  use Archive::Any;
-
-  my $archive = Archive::Any->new($archive_file);
-
-  my @files = $archive->files;
-
-  $archive->extract;
-
-  my $type = $archive->type;
-
-  $archive->is_impolite;
-  $archive->is_naughty;
-
-=head1 DESCRIPTION
-
-This module is a single interface for manipulating different archive formats.  Tarballs, zip files, etc.
-
-=over 4
-
-=item B<new>
-
-  my $archive = Archive::Any->new($archive_file);
-  my $archive = Archive::Any->new($archive_file, $type);
-
-$type is optional.  It lets you force the file type in-case Archive::Any can't figure it out.
-
-=item B<extract>
-
-  $archive->extract;
-  $archive->extract($directory);
-
-Extracts the files in the archive to the given $directory.  If no $directory is given, it will go into the current working directory.
-
-=item B<files>
-
-  my @file = $archive->files;
-
-A list of files in the archive.
-
-=item B<mime_type>
-
- my $mime_type = $archive->mime_type();
-
-Returns the mime type of the archive.
-
-=item B<is_impolite>
-
-  my $is_impolite = $archive->is_impolite;
-
-Checks to see if this archive is going to unpack into the current directory rather than create its own.
-
-=item B<is_naughty>
-
-  my $is_naughty = $archive->is_naughty;
-
-Checks to see if this archive is going to unpack B<outside> the current directory.
-
-=back
-
-=head1 DEPRECATED
-
-=over 4
-
-=item B<type>
-
-  my $type = $archive->type;
-
-Returns the type of archive.  This method is provided for backwards compatibility in the Tar and Zip plugins and will be going away B<soon> in favor of C<mime_type>.
-
-=back
-
-=head1 PLUGINS
-
-For detailed information on writing plugins to work with Archive::Any, please see the pod documentation for L<Archive::Any::Plugin>.
-
-=head1 AUTHOR
-
-Clint Moore E<lt>cmoore@cpan.orgE<gt>
-
-=head1 AUTHOR EMERITUS
-
-Michael G Schwern
-
-=head1 SEE ALSO
-
-Archive::Any::Plugin
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
- perldoc Archive::Any
-
-You can also look for information at:
-
-=over 4
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Archive-Any>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Archive-Any>
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Archive-Any>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Archive-Any>
-
-=back
-
-=head1 LICENSE
-
-This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
-
-See L<http://www.perl.com/perl/misc/Artistic.html>
-
-=cut
-
 package Archive::Any;
 use strict;
 use warnings;
@@ -231,3 +101,145 @@ sub type {
 # End of what you are not seeing.
 
 1;
+
+# ABSTRACT: Single interface to deal with file archives.
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Archive::Any - Single interface to deal with file archives.
+
+=head1 VERSION
+
+version 0.0940
+
+=head1 SYNOPSIS
+
+    use Archive::Any;
+
+    my $archive = Archive::Any->new( $archive_file );
+
+    my @files = $archive->files;
+
+    $archive->extract;
+
+    my $type = $archive->type;
+
+    $archive->is_impolite;
+    $archive->is_naughty;
+
+=head1 DESCRIPTION
+
+This module is a single interface for manipulating different archive formats.  Tarballs, zip files, etc.
+
+=over 4
+
+=item B<new>
+
+    my $archive = Archive::Any->new( $archive_file );
+    my $archive = Archive::Any->new( $archive_file, $type );
+
+$type is optional.  It lets you force the file type in case Archive::Any can't figure it out.
+
+=item B<extract>
+
+    $archive->extract;
+    $archive->extract( $directory );
+
+Extracts the files in the archive to the given $directory.  If no $directory is given, it will go into the current working directory.
+
+=item B<files>
+
+    my @file = $archive->files;
+
+A list of files in the archive.
+
+=item B<mime_type>
+
+    my $mime_type = $archive->mime_type();
+
+Returns the mime type of the archive.
+
+=item B<is_impolite>
+
+    my $is_impolite = $archive->is_impolite;
+
+Checks to see if this archive is going to unpack into the current directory rather than create its own.
+
+=item B<is_naughty>
+
+    my $is_naughty = $archive->is_naughty;
+
+Checks to see if this archive is going to unpack B<outside> the current directory.
+
+=back
+
+=head1 DEPRECATED
+
+=over 4
+
+=item B<type>
+
+    my $type = $archive->type;
+
+Returns the type of archive.  This method is provided for backwards compatibility in the Tar and Zip plugins and will be going away B<soon> in favor of C<mime_type>.
+
+=back
+
+=head1 PLUGINS
+
+For detailed information on writing plugins to work with Archive::Any, please see the pod documentation for L<Archive::Any::Plugin>.
+
+=head1 SEE ALSO
+
+Archive::Any::Plugin
+
+=head1 SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc Archive::Any
+
+You can also look for information at:
+
+=over 4
+
+=item * MetaCPAN
+
+L<https://metacpan.org/module/Archive::Any>
+
+=item * Issue tracker
+
+L<https://github.com/oalders/archive-any/issues>
+
+=back
+
+=head1 AUTHORS
+
+=over 4
+
+=item *
+
+Clint Moore
+
+=item *
+
+Michael G Schwern (author emeritus)
+
+=item *
+
+Olaf Alders (current maintainer)
+
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2013 by Olaf Alders.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
