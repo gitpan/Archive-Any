@@ -43,7 +43,6 @@
             "Module::Find" : "0",
             "base" : "0",
             "strict" : "0",
-            "vars" : "0",
             "warnings" : "0"
          }
       },
@@ -66,7 +65,7 @@
          "web" : "https://github.com/oalders/archive-any"
       }
    },
-   "version" : "0.0940",
+   "version" : "0.0941",
    "x_contributors" : [
       "Olaf Alders <olaf@wundersolutions.com>",
       "unknown <unknown>"

@@ -1,25 +1,23 @@
 package Archive::Any::Plugin::Tar;
 {
-  $Archive::Any::Plugin::Tar::VERSION = '0.0940';
+  $Archive::Any::Plugin::Tar::VERSION = '0.0941';
 }
+
 use strict;
 use base 'Archive::Any::Plugin';
 
 use Archive::Tar;
 use Cwd;
 
-
 sub can_handle {
-    return(
-           'application/x-tar',
-           'application/x-gtar',
-           'application/x-gzip',
-           'application/x-bzip2',
-          );
+    return (
+        'application/x-tar',  'application/x-gtar',
+        'application/x-gzip', 'application/x-bzip2',
+    );
 }
 
 sub files {
-    my( $self, $file ) = @_;
+    my ( $self, $file ) = @_;
     my $t = Archive::Tar->new( $file );
     return $t->list_files;
 }
@@ -36,8 +34,9 @@ sub type {
     return 'tar';
 }
 
-
 1;
+
+# ABSTRACT: Archive::Any wrapper around Archive::Tar
 
 __END__
 
@@ -45,23 +44,19 @@ __END__
 
 =head1 NAME
 
-Archive::Any::Plugin::Tar
+Archive::Any::Plugin::Tar - Archive::Any wrapper around Archive::Tar
 
 =head1 VERSION
 
-version 0.0940
+version 0.0941
 
 =head1 SYNOPSIS
 
-Do not use this module directly.  Instead, use Archive::Any.
-
-=head1 NAME
-
-Archive::Any::Plugin::Tar - Archive::Any wrapper around Archive::Tar
+Do not use this module directly.  Instead, use L<Archive::Any>.
 
 =head1 SEE ALSO
 
-Archive::Any, Archive::Tar
+L<Archive::Any>, L<Archive::Tar>
 
 =head1 AUTHORS
 

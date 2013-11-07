@@ -1,6 +1,6 @@
 package Archive::Any::Plugin;
 {
-  $Archive::Any::Plugin::VERSION = '0.0940';
+  $Archive::Any::Plugin::VERSION = '0.0941';
 }
 
 use strict;
@@ -9,20 +9,18 @@ use warnings;
 use Module::Find;
 use Cwd;
 
-
-
 sub _extract {
-    my($self, $file, $dir) = @_;
+    my ( $self, $file, $dir ) = @_;
 
     my $orig_dir;
-    if( defined $dir ) {
+    if ( defined $dir ) {
         $orig_dir = getcwd;
         chdir $dir;
     }
 
     my $success = $self->extract( $file );
 
-    if( defined $dir) {
+    if ( defined $dir ) {
         chdir $orig_dir;
     }
 
@@ -31,29 +29,29 @@ sub _extract {
 
 1;
 
+# ABSTRACT: Anatomy of an Archive::Any plugin.
+
 __END__
 
 =pod
 
 =head1 NAME
 
-Archive::Any::Plugin
+Archive::Any::Plugin - Anatomy of an Archive::Any plugin.
 
 =head1 VERSION
 
-version 0.0940
+version 0.0941
 
 =head1 SYNOPSIS
 
 Explains what is required for a working plugin to Archive::Any.
 
-=head1 NAME
-
-Archive::Any::Plugin - Anatomy of an Archive::Any plugin.
-
 =head1 PLUGINS
 
-Archive::Any requires that your plugin define three methods, all of which are passed the absolute filename of the file.  This module uses the source of Archive::Any::Plugin::Tar as an example.
+Archive::Any requires that your plugin define three methods, all of which are
+passed the absolute filename of the file.  This module uses the source of
+Archive::Any::Plugin::Tar as an example.
 
 =over 4
 
@@ -85,20 +83,17 @@ Return a list of items inside the archive.
 
 =item B<extract>
 
-This method should extract the contents of $file to the current directory.  L<Archive::Any::Plugin> handles negotiating directories for you.
+This method should extract the contents of $file to the current directory.
+L<Archive::Any::Plugin> handles negotiating directories for you.
 
  sub extract {
     my ( $self, $file ) = @_;
- 
+
     my $t = Archive::Tar->new( $file );
     return $t->extract;
  }
 
 =back
-
-=head1 AUTHOR
-
-Clint Moore E<lt>cmoore@cpan.orgE<gt>
 
 =head1 SEE ALSO
 

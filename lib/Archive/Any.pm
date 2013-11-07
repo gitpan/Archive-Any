@@ -1,9 +1,10 @@
 package Archive::Any;
+{
+  $Archive::Any::VERSION = '0.0941';
+}
+
 use strict;
 use warnings;
-
-use vars qw($VERSION);
-$VERSION = 0.0932;
 
 use Archive::Any::Plugin;
 use File::Spec::Functions qw( rel2abs splitdir );
@@ -13,13 +14,13 @@ use MIME::Types qw(by_suffix);
 sub new {
     my ( $class, $file, $type ) = @_;
 
-    $file = rel2abs($file);
+    $file = rel2abs( $file );
     return unless -f $file;
 
     my %available;
 
     my @plugins = Archive::Any::Plugin->findsubmod;
-    foreach my $plugin (@plugins) {
+    foreach my $plugin ( @plugins ) {
         eval "require $plugin";
         next if $@;
 
@@ -32,20 +33,22 @@ sub new {
 
     my $mime_type;
 
-    if ($type) {
+    if ( $type ) {
+
         # The user forced the type.
-        ($mime_type) = by_suffix($type);
-        unless( $mime_type ) {
+        ( $mime_type ) = by_suffix( $type );
+        unless ( $mime_type ) {
             warn "No mime type found for type '$type'";
             return;
         }
-    } else {
+    }
+    else {
         # Autodetect the type.
-        $mime_type = File::MMagic->new()->checktype_filename($file);
+        $mime_type = File::MMagic->new()->checktype_filename( $file );
     }
 
     my $handler = $available{$mime_type};
-    if( ! $handler ) {
+    if ( !$handler ) {
         warn "No handler available for type '$mime_type'";
         return;
     }
@@ -53,7 +56,7 @@ sub new {
     return bless {
         file    => $file,
         handler => $handler,
-        type => $mime_type,
+        type    => $mime_type,
     }, $class;
 }
 
@@ -61,9 +64,9 @@ sub extract {
     my $self = shift;
     my $dir  = shift;
 
-    return defined($dir)
-      ? $self->{handler}->_extract( $self->{file}, $dir )
-      : $self->{handler}->_extract( $self->{file} );
+    return defined( $dir )
+        ? $self->{handler}->_extract( $self->{file}, $dir )
+        : $self->{handler}->_extract( $self->{file} );
 }
 
 sub files {
@@ -74,16 +77,16 @@ sub files {
 sub is_impolite {
     my $self = shift;
 
-    my @files       = $self->files;
-    my $first_file  = $files[0];
-    my ($first_dir) = splitdir($first_file);
+    my @files         = $self->files;
+    my $first_file    = $files[0];
+    my ( $first_dir ) = splitdir( $first_file );
 
     return grep( !/^\Q$first_dir\E/, @files ) ? 1 : 0;
 }
 
 sub is_naughty {
-    my ($self) = shift;
-    return ( grep { m{^(?:/|(?:\./)*\.\./)} } $self->files ) ? 1 : 0;
+    my ( $self ) = shift;
+    return ( grep {m{^(?:/|(?:\./)*\.\./)}} $self->files ) ? 1 : 0;
 }
 
 sub mime_type {
@@ -98,6 +101,7 @@ sub type {
     my $self = shift;
     return $self->{handler}->type();
 }
+
 # End of what you are not seeing.
 
 1;
@@ -114,7 +118,7 @@ Archive::Any - Single interface to deal with file archives.
 
 =head1 VERSION
 
-version 0.0940
+version 0.0941
 
 =head1 SYNOPSIS
 
@@ -133,7 +137,8 @@ version 0.0940
 
 =head1 DESCRIPTION
 
-This module is a single interface for manipulating different archive formats.  Tarballs, zip files, etc.
+This module is a single interface for manipulating different archive formats.
+Tarballs, zip files, etc.
 
 =over 4
 
@@ -142,14 +147,16 @@ This module is a single interface for manipulating different archive formats.  T
     my $archive = Archive::Any->new( $archive_file );
     my $archive = Archive::Any->new( $archive_file, $type );
 
-$type is optional.  It lets you force the file type in case Archive::Any can't figure it out.
+$type is optional.  It lets you force the file type in case Archive::Any can't
+figure it out.
 
 =item B<extract>
 
     $archive->extract;
     $archive->extract( $directory );
 
-Extracts the files in the archive to the given $directory.  If no $directory is given, it will go into the current working directory.
+Extracts the files in the archive to the given $directory.  If no $directory is
+given, it will go into the current working directory.
 
 =item B<files>
 
@@ -167,13 +174,15 @@ Returns the mime type of the archive.
 
     my $is_impolite = $archive->is_impolite;
 
-Checks to see if this archive is going to unpack into the current directory rather than create its own.
+Checks to see if this archive is going to unpack into the current directory
+rather than create its own.
 
 =item B<is_naughty>
 
     my $is_naughty = $archive->is_naughty;
 
-Checks to see if this archive is going to unpack B<outside> the current directory.
+Checks to see if this archive is going to unpack B<outside> the current
+directory.
 
 =back
 
@@ -185,13 +194,16 @@ Checks to see if this archive is going to unpack B<outside> the current director
 
     my $type = $archive->type;
 
-Returns the type of archive.  This method is provided for backwards compatibility in the Tar and Zip plugins and will be going away B<soon> in favor of C<mime_type>.
+Returns the type of archive.  This method is provided for backwards
+compatibility in the Tar and Zip plugins and will be going away B<soon> in
+favor of C<mime_type>.
 
 =back
 
 =head1 PLUGINS
 
-For detailed information on writing plugins to work with Archive::Any, please see the pod documentation for L<Archive::Any::Plugin>.
+For detailed information on writing plugins to work with Archive::Any, please
+see the pod documentation for L<Archive::Any::Plugin>.
 
 =head1 SEE ALSO
 

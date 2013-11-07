@@ -32,14 +32,13 @@ my %WriteMakefileArgs = (
     "Module::Find" => 0,
     "base" => 0,
     "strict" => 0,
-    "vars" => 0,
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
     "Test::More" => 0,
     "Test::Warn" => 0
   },
-  "VERSION" => "0.0940",
+  "VERSION" => "0.0941",
   "test" => {
     "TESTS" => "t/*.t"
   }

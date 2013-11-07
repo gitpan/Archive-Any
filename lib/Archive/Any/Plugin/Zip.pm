@@ -1,32 +1,27 @@
 package Archive::Any::Plugin::Zip;
+{
+  $Archive::Any::Plugin::Zip::VERSION = '0.0941';
+}
 
 use strict;
-use vars qw($VERSION);
-$VERSION = 0.03;
 
 use base qw(Archive::Any::Plugin);
 
 use Archive::Zip qw(:ERROR_CODES);
 
-
 sub can_handle {
-    return(
-           'application/x-zip',
-           'application/x-jar',
-           'application/zip',
-          );
+    return ( 'application/x-zip', 'application/x-jar', 'application/zip', );
 }
 
 sub files {
-    my( $self, $file ) = @_;
+    my ( $self, $file ) = @_;
 
     my $z = Archive::Zip->new( $file );
     return $z->memberNames;
 }
 
-
 sub extract {
-    my($self, $file) = @_;
+    my ( $self, $file ) = @_;
 
     my $z = Archive::Zip->new( $file );
     $z->extractTree;
@@ -39,9 +34,9 @@ sub type {
     return 'zip';
 }
 
-
-
 1;
+
+# ABSTRACT: Archive::Any wrapper around Archive::Zip
 
 __END__
 
@@ -49,29 +44,21 @@ __END__
 
 =head1 NAME
 
-Archive::Any::Plugin::Zip
+Archive::Any::Plugin::Zip - Archive::Any wrapper around Archive::Zip
 
 =head1 VERSION
 
-version 0.0940
+version 0.0941
 
 =head1 SYNOPSIS
 
 B<DO NOT USE THIS MODULE DIRECTLY>
 
-Use Archive::Any instead.
+Use L<Archive::Any> instead.
 
 =head1 DESCRIPTION
 
-Wrapper around Archive::Zip for Archive::Any.
-
-=head1 NAME
-
-Archive::Any::Plugin::Zip - Archive::Any wrapper around Archive::Zip
-
-=head1 SEE ALSO
-
-Archive::Any, Archive::Zip
+Wrapper around L<Archive::Zip> for L<Archive::Any>.
 
 =head1 AUTHORS
 

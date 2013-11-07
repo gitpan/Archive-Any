@@ -20,7 +20,7 @@ my %module_build_args = (
     "Olaf Alders (current maintainer)"
   ],
   "dist_name" => "Archive-Any",
-  "dist_version" => "0.0940",
+  "dist_version" => "0.0941",
   "license" => "perl",
   "module_name" => "Archive::Any",
   "recommends" => {},
@@ -35,7 +35,6 @@ my %module_build_args = (
     "Module::Find" => 0,
     "base" => 0,
     "strict" => 0,
-    "vars" => 0,
     "warnings" => 0
   },
   "script_files" => [],
